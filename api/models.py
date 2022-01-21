@@ -23,4 +23,3 @@ class UserCorrelation(models.Model):
     y_data_type = models.CharField(max_length=100)
     correlation = models.JSONField()
 
-# Create your models here.
