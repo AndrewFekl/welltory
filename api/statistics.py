@@ -7,6 +7,14 @@ class Statistics:
         self.data_dict = data_dict
 
 
+    def get_data_types(self):
+
+        x_data_type = self.data_dict['x_data_type']
+        y_data_type = self.data_dict['y_data_type']
+
+        return x_data_type, y_data_type
+
+
     def get_pirson_correlation(self, data_frame):
         """ Принимает на вход pandas dataframe, где первая колонка - даты,
         вторая и третья соответственно массивы данных для вычисления корреляции"""
@@ -48,3 +56,6 @@ class Statistics:
         data_frame = pd.merge(x_df, y_df, on='date', how='inner')
         # Возвращаем датафрейм без пропуска данных
         return data_frame.dropna()
+
+
+
