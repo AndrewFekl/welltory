@@ -3,6 +3,10 @@ from .serializers import UserCorrelationSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
+import json
+from jsonschema import validate
+from jsonschema.exceptions import ValidationError
+from.schemas import VALIDATION_SCHEMA
 
 
 @api_view(['POST'])
@@ -10,8 +14,17 @@ def calculate_view(request):
     """ Метод принимает в теле запроса данные пользователя в json формате,
     вычисляет статистики (ковариация и корреляция по Пирсону) и записывает их в базу"""
 
-    # Преобразование данных в формат модели и вычисление статистик
-    output_dict = UserCorrelation.data_preparation(request.data)
+    # Проверяем валидность данных, вычисляем статистики и переводим в формат модели БД
+    try:
+        validate(instance=request.data, schema=VALIDATION_SCHEMA)
+        output_dict = UserCorrelation.data_preparation(request.data)
+
+    except json.JSONDecodeError as exc:
+        return Response(f"Bad JSON, {exc.message}", status=400)
+
+    except ValidationError as exc:
+        return Response(f"Validation Error, {exc.message}", status=400)
+
 
     # Запись данных в базу
     data_set = UserCorrelationSerializer(data=output_dict)
