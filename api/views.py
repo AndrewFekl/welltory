@@ -1,6 +1,7 @@
 from .models import UserCorrelation
 from .serializers import UserCorrelationSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 import json
@@ -10,6 +11,7 @@ from.schemas import VALIDATION_SCHEMA
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def calculate_view(request):
     """ Метод принимает в теле запроса данные пользователя в json формате,
     вычисляет статистики (ковариация и корреляция по Пирсону) и записывает их в базу"""
@@ -36,6 +38,7 @@ def calculate_view(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def correlation_view(request):
     """ Метод принимает GET запрос с параметрами и возвращает соответствующие статистики """
 
