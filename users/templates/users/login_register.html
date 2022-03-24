@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+{% block content %}
+
+{% if page %}
+<h1>Регистрация пользователей</h1>
+<form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Register User"/>
+</form>
+{% endif %}
+
+{% endblock content%}

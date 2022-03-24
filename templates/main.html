@@ -18,6 +18,10 @@
     </ul>
     {% endif%}
 
+    <p> Already have account: <a href="{% url 'main-page' %}">Home</a></p>
+    <p>Don't have account: <a href="{% url 'register' %}">Register</a></p>
+
+
     {% block content %}
     {% endblock content %}
 

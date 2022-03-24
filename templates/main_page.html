@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% block content %}
+<h1>Портал получения статистических метрик по данным пользователей</h1>
+<p>Реализован API, принимающий данные пользователя и возвращающий rорреляцию по Пирсону и ковариацию</p>
+<div>
+    <h3>API</h3>
+    <p>POST http://127.0.0.1:8000/api/calculate</p>
+    <p>Принимает входные данные в JSON-формате, вычисляет и сохраняет метрики в базу данных</p>
+
+    <code>
+        {
+            "user_id": int,
+            "data": {
+                "x_data_type": str,
+                "y_data_type": str,
+                "x": [
+                    {
+                        "date": YYYY-MM-DD,
+                        "value": float,
+                    },
+                    ...
+                ],
+                "y": [
+                    {
+                        "date": YYYY-MM-DD,
+                        "value": float,
+                    },
+                    ...
+                ]
+            }
+        }
+    </code>
+
+<p>GET http://127.0.0.1:8000/api/correlation?x_data_type=str&y_data_type=str&user_id=int</p>
+
+<p>Отдает посчитанную метрику для конкретного пользователя и конкретных типов данных
+Если для данной комбинации рассчитанных данных нет - возвращает 404
+    Формат ответа в случае HTTP 200:</p>
+<code>
+   {
+       "user_id": int,
+       "x_data_type": str,
+       "y_data_type": str,
+       "correlation": {
+           "value": float,
+           "p_value": float,
+       }
+   }
+</code>
+
+</div>
+{% endblock %}
